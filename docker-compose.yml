@@ -1,0 +1,26 @@
+version: "3"
+services:
+  app:
+    build: ./docker/api/
+    volumes:
+      - ./:/go/src/github.com/YUDAI-HIZU/gin-api
+    ports:
+      - "8080:8080"
+    links:
+      - db
+  db:
+    build: ./docker/mysql/
+    restart: always
+    environment:
+      MYSQL_USER: root
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: gin-api
+      TZ: "Asia/Tokyo"
+    ports:
+      - 3306:3306
+    volumes:
+      - mysql:/var/lib/mysql
+      - ./docker/mysql/init.d:/docker-entrypoint-initdb.d
+volumes:
+  mysql:
+    driver: local
