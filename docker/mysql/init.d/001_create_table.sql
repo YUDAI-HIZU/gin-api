@@ -1,13 +1,21 @@
-CREATE TABLE IF NOT EXISTS `todo` (
-  `id` varchar(64) NOT NULL,
-  `text` varchar(256) NOT NULL,
-  `done` bool NOT NULL,
-  `user_id` varchar(64) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_bin;
+SET FOREIGN_KEY_CHECKS = 0;
 
-CREATE TABLE IF NOT EXISTS `user` (
-  `id` varchar(64) NOT NULL,
-  `name` varchar(256) NOT NULL,
+CREATE TABLE `users` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `encrypted_password` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL DEFAULT '',
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS `todos` (
+  `id` bigint(20) NOT NULL,
+  `text` varchar(256) NOT NULL DEFAULT '',
+  `done` bool NOT NULL,
+  `user_id` bigint(20) NOT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT `fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
